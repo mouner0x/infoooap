@@ -10,10 +10,10 @@ app.set("trust proxy", true)
 
 app.get("/", async (req, res) => {
 
-    const ip = req.headers['x-forwarded-for'] | req.ip;
-    const data = await fetch((`https://ipapi.co/${ip}/json/`))
+    const xRealIP = req.headers['x-forwarded-for'] ? req.headers['x-forwarded-for'].split(",")[0] : req.connection.remoteAddress;
+    const data = await fetch((`https://ipapi.co/${xRealIP}/json/`))
     const dataJson = await data.json()
-    res.status(200).json(dataJson)
+    res.status(200).json(data)
 
 
 
